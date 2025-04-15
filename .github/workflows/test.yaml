@@ -1,0 +1,19 @@
+name: package
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: "1"
+      - name: Install Python and PIP
+        run: sudo apt-get install pip python3-venv --no-install-recommends -yq
+      - name: Install Mypy and Pylint
+        run: sudo pip install mypy pylint
+      - name: Check pylint
+        run: pylint -rn -sn -E ./pyonf/
+      - name: Check mypy
+        run: mypy --install-types --ignore-missing-imports --check-untyped-defs --non-interactive ./pyonf/

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77.0.0", "wheel>=0.31.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyonf"
+description = "Easy configuration from command line or YAML file"
+requires-python = ">=3.7"
+keywords = ["configuration", "option", "argparse", "yaml", "command line", "argument"]
+license = "GPL-3.0-only"
+readme = {file = "README.md", content-type = "text/markdown"}
+authors = [{name = "simfu", email = "simfu@free.fr"}]
+version = "0.3.1"
+
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+dependencies = ["pyyaml"]
+
+[project.urls]
+homepage = "https://github.com/simfu/pyonf"
+#documentation = "https://github.com/simfu/pyonf"
+repository = "https://github.com/simfu/pyonf"
+#changelog = "https://github.com/simfu/pyonf"
+
+[project.optional-dependencies]
+dev = [
+    "mypy~=1.14.1",
+    "pylint"
+]

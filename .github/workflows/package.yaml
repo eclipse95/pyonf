@@ -1,0 +1,22 @@
+name: package
+on:
+  push:
+    tags: ["*"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: "1"
+      - name: Install Python and PIP
+        run: sudo apt-get install pip python3-venv --no-install-recommends -yq
+      - name: Install build
+        run: pip3 install build
+      - name: Build package
+        run: python3 -m build
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.workspace }}/dist/*.whl

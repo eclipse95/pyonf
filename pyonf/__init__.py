@@ -1,10 +1,10 @@
-from __future__ import print_function
 import argparse
-import sys
-import os
 import logging
-import yaml
+import os
+import sys
+from typing import Any
 
+import yaml
 
 log = logging.getLogger(__name__)
 
@@ -66,7 +66,7 @@ def _args_to_dict(in_args):
         {k1: {k2: {k3 : v}}}
 
     """
-    out_dict = {}
+    out_dict = {}  # type: dict[str, Any]
     for arg, val in in_args.items():
         sub_dict_ptr = out_dict
         for i, key in enumerate(arg.split("-")):
@@ -83,14 +83,14 @@ class ListAction(argparse.Action):
         setattr(namespace, self.dest, yaml.safe_load("[" + values + "]"))
 
 
-def pyonf(default_conf={}, mandatory_opts=[], argv=None, as_global_vars=False):
+def pyonf(default_conf=None, mandatory_opts=None, argv=None, as_global_vars=False):
     """
         Build command line and configuration parser from a default config.
 
         Calling this function will parse command line arguments and:
         - accept a path to a YAML configuration file
         - accept command line options with respect to default_conf content
-        It will then returns a dict with parsed configuration options
+        It will return then a dict with parsed configuration options
 
         :param default_conf:   Default configuration, as a path to YAML file,
                                YAML string or Python dict
@@ -105,12 +105,15 @@ def pyonf(default_conf={}, mandatory_opts=[], argv=None, as_global_vars=False):
 
     """
 
+    if mandatory_opts is None:
+        mandatory_opts = []
+    if default_conf is None:
+        default_conf = {}
     if not argv:
         argv = sys.argv[1:]
 
     conf = {}
     file_conf = {}
-    cli_conf = {}
 
     log.debug("default_conf: %s (%s)", default_conf, type(default_conf))
     if isinstance(default_conf, str):
@@ -184,7 +187,7 @@ def pyonf(default_conf={}, mandatory_opts=[], argv=None, as_global_vars=False):
             pargs.append("-" + arg[0])
             short_args.add(arg[0])
 
-        pkwargs = {}
+        pkwargs = {}  # type: dict[str, Any]
 
         if isinstance(val, bool) and not val:
             pkwargs["action"] = "store_true"
@@ -231,7 +234,7 @@ def pyonf(default_conf={}, mandatory_opts=[], argv=None, as_global_vars=False):
         arg: getattr(cli_args, arg.replace("-", "_"))
         for arg in available_args
         if hasattr(cli_args, arg.replace("-", "_"))
-        and getattr(cli_args, arg.replace("-", "_"))
+           and getattr(cli_args, arg.replace("-", "_"))
     }
     cli_conf = _args_to_dict(cli_conf)
 
